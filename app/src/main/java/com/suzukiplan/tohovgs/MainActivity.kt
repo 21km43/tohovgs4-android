@@ -19,8 +19,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
-import com.android.billingclient.api.*
-import com.google.android.gms.ads.*
+import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.PendingPurchasesParams
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryPurchasesParams
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.admanager.AdManagerAdRequest
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
@@ -28,7 +45,11 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
-import com.suzukiplan.tohovgs.api.*
+import com.suzukiplan.tohovgs.api.Constants
+import com.suzukiplan.tohovgs.api.Logger
+import com.suzukiplan.tohovgs.api.MusicManager
+import com.suzukiplan.tohovgs.api.Settings
+import com.suzukiplan.tohovgs.api.WebAPI
 import com.suzukiplan.tohovgs.model.Album
 import com.suzukiplan.tohovgs.model.Song
 import java.util.concurrent.Executors
@@ -579,6 +600,7 @@ class MainActivity : AppCompatActivity(), SongListFragment.Listener {
     private fun setupBillingClient() {
         billingClient = BillingClient.newBuilder(this)
             .setListener { result, purchases -> proceedPurchases(result, purchases) }
+            .enableAutoServiceReconnection()
             .enablePendingPurchases(
                 PendingPurchasesParams
                     .newBuilder()
