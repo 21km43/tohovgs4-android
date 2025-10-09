@@ -28,6 +28,7 @@ android {
                         "-Ofast " +
                         "-D__ANDROID__ " +
                         "-DFIXED_POINT " +
+                        "-Wl,-z,max-page-size=16384 " +
                         "-DNDEBUG "
                 cppFlags "-std=c++1y " +
                         "-frtti " +
@@ -39,6 +40,7 @@ android {
                         "-DFORCE_DISABLE_ALIGNED_UNION " +
                         "-D__ANDROID__ " +
                         "-DFIXED_POINT " +
+                        "-Wl,-z,max-page-size=16384 " +
                         "-DNDEBUG "
             }
         }
