@@ -12,7 +12,7 @@ android {
         minSdk 29
         compileSdk 35
         targetSdk 35
-        versionCode 4280
+        versionCode 4281
         versionName "4.28"
         ndk {
             moduleName "native-lib"
