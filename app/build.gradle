@@ -7,13 +7,16 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
     defaultConfig {
         applicationId "com.suzukiplan.TOHOVGS"
         minSdk 29
-        compileSdk 35
-        targetSdk 35
-        versionCode 4270
-        versionName "4.27"
+        compileSdk 36
+        targetSdk 36
+        versionCode 4281
+        versionName "4.28"
         ndk {
             moduleName "native-lib"
             abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
@@ -21,12 +24,14 @@ android {
         externalNativeBuild {
             cmake {
                 arguments "-DANDROID_STL=c++_static"
+                arguments "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
                 cFlags "-fPIC " +
                         "-ffast-math " +
                         "-fsigned-char " +
                         "-Ofast " +
                         "-D__ANDROID__ " +
                         "-DFIXED_POINT " +
+                        "-Wl,-z,max-page-size=16384 " +
                         "-DNDEBUG "
                 cppFlags "-std=c++1y " +
                         "-frtti " +
@@ -38,6 +43,7 @@ android {
                         "-DFORCE_DISABLE_ALIGNED_UNION " +
                         "-D__ANDROID__ " +
                         "-DFIXED_POINT " +
+                        "-Wl,-z,max-page-size=16384 " +
                         "-DNDEBUG "
             }
         }
@@ -69,6 +75,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -81,18 +92,18 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.16.0'
+    implementation 'androidx.core:core-ktx:1.17.0'
     implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'com.google.android.material:material:1.13.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
-    implementation 'com.google.code.gson:gson:2.11.0'
-    implementation 'com.google.android.gms:play-services-ads:24.4.0'
+    implementation 'com.google.code.gson:gson:2.13.2'
+    implementation 'com.google.android.gms:play-services-ads:24.6.0'
     implementation 'com.google.android.gms:play-services-appset:16.1.0'
-    implementation platform('com.google.firebase:firebase-bom:33.16.0')
+    implementation platform('com.google.firebase:firebase-bom:34.3.0')
     implementation 'com.google.firebase:firebase-analytics-ktx:22.5.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-perf-ktx'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:19.4.4'
+    implementation 'com.google.firebase:firebase-perf-ktx:21.0.5'
+    implementation 'com.squareup.okhttp3:okhttp:5.1.0'
     implementation 'com.android.billingclient:billing:8.0.0'
     implementation 'com.android.billingclient:billing-ktx:8.0.0'
 }
